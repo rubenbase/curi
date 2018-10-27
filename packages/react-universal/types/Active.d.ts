@@ -6,4 +6,4 @@ export interface ActiveProps {
     params?: object;
     partial?: boolean;
 }
-export default function (props: ActiveProps): ReactNode;
+export default function Active(props: ActiveProps): ReactNode;

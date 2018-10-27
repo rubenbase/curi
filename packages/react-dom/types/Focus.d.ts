@@ -5,4 +5,5 @@ export interface FocusProps {
     preventScroll?: boolean;
     preserve?: boolean;
 }
-export default function Focus(props: FocusProps): React.ReactElement<any>;
+declare const Focus: (props: FocusProps) => React.ReactNode;
+export default Focus;

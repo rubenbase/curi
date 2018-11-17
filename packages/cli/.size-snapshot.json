@@ -1,0 +1,12 @@
+{
+  "bin/curi-static.js": {
+    "bundled": 247,
+    "minified": 207,
+    "gzipped": 153
+  },
+  "bin/curi-cli.js": {
+    "bundled": 15348,
+    "minified": 7799,
+    "gzipped": 2764
+  }
+}

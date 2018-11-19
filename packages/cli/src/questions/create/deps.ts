@@ -1,18 +1,27 @@
-import dedent from "dedent";
-
 import { Questions } from "inquirer";
 
-export type Deps = string[];
-
-export interface DependencyAnswers {
+export interface UIAnswers {
   ui: string;
-  interactions: Deps;
-  sideEffects: Deps;
-  static: boolean;
-  history: Deps;
 }
 
-const questions: Questions<DependencyAnswers> = [
+export interface InteractionAnswers {
+  active: boolean;
+  ancestors: boolean;
+  prefetch: boolean;
+}
+
+export interface SideEffectAnswers {
+  ariaLive: boolean;
+  scroll: boolean;
+  title: boolean;
+}
+
+export interface HistoryAnswers {
+  testing: boolean;
+  ssr: boolean;
+}
+
+export const uiQuestions: Questions<UIAnswers> = [
   {
     type: "list",
     name: "ui",
@@ -40,114 +49,64 @@ const questions: Questions<DependencyAnswers> = [
       }
     ],
     pageSize: 5
-  },
-  {
-    type: "checkbox",
-    name: "interactions",
-    message: "Which route interactions do you need?",
-    choices: [
-      {
-        name: dedent`
-          @curi/route-active
-              detect active routes`,
-        value: "@curi/route-active"
-      },
-      {
-        name: dedent`
-          @curi/route-ancestors
-              determine a route's ancestor routes`,
-        value: "@curi/route-ancestors"
-      },
-      {
-        name: dedent`
-          @curi/route-prefetch
-              prefetch data for asynchronous routes`,
-        value: "@curi/route-prefetch"
-      }
-    ],
-    pageSize: 6
-  },
-  {
-    type: "checkbox",
-    name: "sideEffects",
-    message: "When the user navigates to a new location, do you want to:",
-    choices(answers): Array<any> {
-      const isReactNative = answers.ui === "@curi/react-native";
-      return [
-        {
-          name: `automatically scroll if the new location has a hash`,
-          value: "@curi/side-effect-scroll",
-          disabled: !isReactNative
-        },
-        {
-          name: `set the document's title`,
-          value: "@curi/side-effect-title",
-          disabled: !isReactNative
-        },
-        {
-          name: `announce navigation to screen reader users`,
-          value: "@curi/side-effect-aria-live",
-          disabled: !isReactNative,
-          checked: true
-        }
-      ];
-    },
-    when(answers) {
-      return answers.ui !== "@curi/react-native";
-    },
-    pageSize: 3
-  },
-  {
-    type: "confirm",
-    name: "static",
-    message: "Do you want to use @curi/static to render static HTML pages?",
-    default: false,
-    when(answers) {
-      return answers.ui !== "@curi/react-native";
-    }
-  },
-  {
-    type: "checkbox",
-    name: "history",
-    message: "Where will you be running the application?",
-    choices(answers): Array<any> {
-      let shouldUseBrowser = false;
-      let shouldUseMemory = false;
-
-      if (
-        answers.ui === "@curi/react-dom" ||
-        answers.ui === "@curi/vue" ||
-        answers.ui === "@curi/svelte"
-      ) {
-        shouldUseBrowser = true;
-      }
-
-      if (answers.ui === "@curi/react-native" || answers.static) {
-        shouldUseMemory = true;
-      }
-
-      return [
-        {
-          name: `In the browser, with a server that can handle dynamic requests`,
-          value: "@hickory/browser",
-          checked: shouldUseBrowser
-        },
-        {
-          name: `Outside of a browser (this includes server-side rendering, testing, and React Native)`,
-          value: "@hickory/in-memory",
-          checked: shouldUseMemory
-        },
-        {
-          name: `In the browser, WITHOUT a server that can handle dynamic requests`,
-          value: "@hickory/hash"
-        }
-      ];
-    },
-    pageSize: 5,
-    validate(value) {
-      return value.length >= 1;
-    }
   }
 ];
 
-export default questions;
+export const interactionQuestions: Questions<InteractionAnswers> = [
+  {
+    type: "confirm",
+    name: "active",
+    message: 'Do you need to detect when a route is "active"?',
+    default: false
+  },
+  {
+    type: "confirm",
+    name: "ancestors",
+    message:
+      "Do you need to determine a route's ancestors (e.g. for breadcrumbs)?",
+    default: false
+  },
+  {
+    type: "confirm",
+    name: "prefetch",
+    message: "Do you need to prefetch data for a route?",
+    default: false
+  }
+];
+
+export const sideEffectQuestions: Questions<SideEffectAnswers> = [
+  {
+    type: "confirm",
+    name: "ariaLive",
+    message: "Should your app announce navigation to screen reader users?",
+    default: true
+  },
+  {
+    type: "confirm",
+    name: "scroll",
+    message:
+      "Should your app automatically scroll when navigating to a location with a hash?",
+    default: true
+  },
+  {
+    type: "confirm",
+    name: "title",
+    message: "Should your app set the document's title after navigating?",
+    default: true
+  }
+];
+
+export const webHistoryQuestions: Questions<HistoryAnswers> = [
+  {
+    type: "confirm",
+    name: "testing",
+    message:
+      "Will you be writing tests for the application that will run in Node (e.g. with Jest)?"
+  },
+  {
+    type: "confirm",
+    name: "ssr",
+    message:
+      "Will you be using server-side rendering or static site generation?"
+  }
+];

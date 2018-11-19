@@ -1,7 +1,12 @@
 import spawn from "cross-spawn";
 import dedent from "dedent";
 
-import { DependencyAnswers } from "../questions/create/deps";
+import {
+  UIAnswers,
+  InteractionAnswers,
+  SideEffectAnswers,
+  HistoryAnswers
+} from "../questions/create/deps";
 
 async function installRegularDependencies(deps: Array<string>) {
   try {
@@ -38,27 +43,13 @@ function runInstallCommand(command: string, args: Array<string>) {
   });
 }
 
-export default async function installDependencies(deps: DependencyAnswers) {
-  const regDeps: Array<string> = ["@curi/router", "@curi/helpers"];
-  const devDeps: Array<string> = [];
-
-  if (deps.ui) {
-    regDeps.push(deps.ui);
-  }
-
-  regDeps.push(...deps.history);
-  regDeps.push(...deps.interactions);
-  if (deps.sideEffects) {
-    regDeps.push(...deps.sideEffects);
-  }
-
-  if (deps.static) {
-    devDeps.push("@curi/static");
-  }
-
+export default async function installDependencies(
+  deps: Array<string>,
+  devDeps: Array<string>
+) {
   try {
     // can these safely be run concurrently?
-    await installRegularDependencies(regDeps);
+    await installRegularDependencies(deps);
     await installDevDependencies(devDeps);
   } catch (e) {
     console.error(e);

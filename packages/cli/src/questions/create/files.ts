@@ -16,13 +16,32 @@ const questions: Questions = [
     type: "input",
     name: "dir",
     default: "src",
-    message: "Source code directory (relative to current location)"
+    message:
+      "What directory is your source code in (relative to current location)?"
+  },
+  {
+    type: "input",
+    name: "router",
+    default: "router.js",
+    message:
+      "The router is created in its own module. What should the module be called?"
+  },
+  {
+    type: "confirm",
+    name: "overwriteRouter",
+    default: false,
+    message: "A router file already exists. Do you want to overwrite it?",
+    when(answers) {
+      const routesFile = path.join(here, answers.dir, answers.router);
+      return fs.existsSync(routesFile);
+    }
   },
   {
     type: "input",
     name: "routes",
     default: "routes.js",
-    message: "Route module filename"
+    message:
+      "Routes are created in their own module. What should the module be called?"
   },
   {
     type: "confirm",
@@ -38,7 +57,7 @@ const questions: Questions = [
     type: "input",
     name: "components",
     default: "components/routes",
-    message: "Route components location"
+    message: "Where should route components be created?"
   }
 ];
 

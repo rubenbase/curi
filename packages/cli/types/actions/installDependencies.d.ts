@@ -1,2 +1,1 @@
-import { DependencyAnswers } from "../questions/create/deps";
-export default function installDependencies(deps: DependencyAnswers): Promise<void>;
+export default function installDependencies(deps: Array<string>, devDeps: Array<string>): Promise<void>;

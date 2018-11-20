@@ -5,8 +5,8 @@
     "gzipped": 153
   },
   "bin/curi-cli.js": {
-    "bundled": 17905,
-    "minified": 8515,
-    "gzipped": 2950
+    "bundled": 25555,
+    "minified": 11765,
+    "gzipped": 3829
   }
 }

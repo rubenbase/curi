@@ -1,6 +1,6 @@
 import commander from "commander";
-import create from "../commands/create";
-import staticCommand from "../commands/static";
+import create from "./commands/create";
+import staticCommand from "./commands/static";
 
 commander
   .command("create")

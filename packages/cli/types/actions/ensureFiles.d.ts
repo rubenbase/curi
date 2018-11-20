@@ -1,2 +1,2 @@
-import { CuriConfig } from "../types";
-export default function setupProjectFiles(config: CuriConfig): void;
+import { CuriConfig, CuriDependencies } from "../types";
+export default function setupProjectFiles(config: CuriConfig, deps: CuriDependencies): Promise<void>;

@@ -4,7 +4,7 @@ const plugins = require("../../scripts/rollup/plugins");
 const pkg = require("./package.json");
 const deps = Object.keys(pkg.dependencies).map(key => key);
 
-const input = "src/bin/index.ts";
+const input = "src/index.ts";
 const sourcemap = false;
 
 module.exports = [

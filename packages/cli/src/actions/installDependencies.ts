@@ -1,13 +1,6 @@
 import spawn from "cross-spawn";
 import dedent from "dedent";
 
-import {
-  UIAnswers,
-  InteractionAnswers,
-  SideEffectAnswers,
-  HistoryAnswers
-} from "../questions/create/deps";
-
 async function installRegularDependencies(deps: Array<string>) {
   try {
     await runInstallCommand("npm", ["install", "--save", ...deps]);

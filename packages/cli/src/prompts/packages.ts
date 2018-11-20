@@ -46,9 +46,11 @@ export default async function packagesPrompts() {
   // application will use @hickory/browser
   const historyDeps = [];
   const historyDevDeps = [];
+  let appHistory: string;
   if (!isReactNative) {
     const historyAnswers = await prompt(webHistoryQuestions);
     historyDeps.push("@hickory/browser");
+    appHistory = "@hickory/browser";
 
     // make @hickory/in-memory a devDep when its Node use is only for testing
     if (historyAnswers.ssr) {
@@ -57,17 +59,26 @@ export default async function packagesPrompts() {
       historyDevDeps.push("@hickory/in-memory");
     }
   } else {
+    appHistory = "@hickory/in-memory";
     historyDeps.push("@hickory/in-memory");
   }
 
   return {
-    deps: [
-      "@curi/router",
-      "@curi/helpers",
-      ...interactionPkgs,
-      ...sideEffectPkgs,
-      ...historyDeps
-    ],
-    devDeps: [...historyDevDeps]
+    deps: {
+      ui: uiPackage,
+      history: appHistory,
+      interactions: interactionPkgs,
+      sideEffects: sideEffectPkgs
+    },
+    install: {
+      deps: [
+        "@curi/router",
+        "@curi/helpers",
+        ...interactionPkgs,
+        ...sideEffectPkgs,
+        ...historyDeps
+      ],
+      devDeps: [...historyDevDeps]
+    }
   };
 }

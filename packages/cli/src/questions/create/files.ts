@@ -9,12 +9,17 @@ export interface FileAnswers {
   components: string;
 }
 
-const here = process.cwd();
-
 const questions: Questions = [
   {
     type: "input",
-    name: "dir",
+    name: "root",
+    default: ".",
+    message:
+      "Where is the root of the project? (leave blank if root is current directory)"
+  },
+  {
+    type: "input",
+    name: "src",
     default: "src",
     message:
       "What directory is your source code in (relative to current location)?"
@@ -32,7 +37,7 @@ const questions: Questions = [
     default: false,
     message: "A router file already exists. Do you want to overwrite it?",
     when(answers) {
-      const routesFile = path.join(here, answers.dir, answers.router);
+      const routesFile = path.join(answers.root, answers.src, answers.router);
       return fs.existsSync(routesFile);
     }
   },
@@ -49,7 +54,7 @@ const questions: Questions = [
     default: false,
     message: "A routes file already exists. Do you want to overwrite it?",
     when(answers) {
-      const routesFile = path.join(here, answers.dir, answers.routes);
+      const routesFile = path.join(answers.root, answers.src, answers.routes);
       return fs.existsSync(routesFile);
     }
   },

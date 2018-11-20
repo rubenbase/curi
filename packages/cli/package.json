@@ -16,8 +16,7 @@
     "prebuild": "rimraf bin && rimraf types",
     "build": "rollup -c",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test",
-    "test": "jest"
+    "prepublishOnly": "npm test"
   },
   "repository": {
     "type": "git",

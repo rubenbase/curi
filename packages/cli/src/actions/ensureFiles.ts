@@ -1,17 +1,21 @@
 import path from "path";
 import * as fs from "fs-extra";
 
-import { CuriConfig } from "../types";
+import createRouterFile from "./createRouterFile";
+import createRoutesFile from "./createRoutesFile";
 
-export default function setupProjectFiles(config: CuriConfig) {
-  const { dir, router, routes, components } = config.source;
-  const src = path.join(process.cwd(), dir);
-  const routerSrc = path.join(src, router);
-  const routeSrc = path.join(src, routes);
-  const componentDir = path.join(src, components);
+import { CuriConfig, CuriDependencies } from "../types";
 
-  fs.ensureDirSync(src);
-  fs.ensureFileSync(routerSrc);
-  fs.ensureFileSync(routeSrc);
-  fs.ensureDirSync(componentDir);
+export default async function setupProjectFiles(
+  config: CuriConfig,
+  deps: CuriDependencies
+) {
+  const { root, src, components } = config.files;
+  const srcDir = path.join(root, src);
+  const componentDir = path.join(srcDir, components);
+
+  await fs.ensureDir(src);
+  await createRouterFile(config, deps);
+  await createRoutesFile(config);
+  await fs.ensureDir(componentDir);
 }

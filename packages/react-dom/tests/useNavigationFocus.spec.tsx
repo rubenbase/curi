@@ -33,9 +33,8 @@ describe("useNavigationFocus", () => {
   describe("mounting", () => {
     it("focuses ref when mounting", () => {
       function Focuser() {
-        const ref = React.createRef();
-        const result = useNavigationFocus(ref);
-        // @ts-ignore
+        const ref = React.useRef(null);
+        useNavigationFocus(ref);
         return <div id="test" tabIndex={-1} ref={ref} />;
       }
 
@@ -63,9 +62,8 @@ describe("useNavigationFocus", () => {
       const Router = curiProvider(router);
 
       function Focuser() {
-        const ref = React.createRef();
-        const result = useNavigationFocus(ref);
-        // @ts-ignore
+        const ref = React.useRef(null);
+        useNavigationFocus(ref);
         return <div id="test" tabIndex={-1} />;
       }
 
@@ -84,9 +82,8 @@ describe("useNavigationFocus", () => {
   describe("updates", () => {
     it("does not re-focus ref for regular re-renders", () => {
       function Focuser({ children }) {
-        const ref = React.createRef();
-        const result = useNavigationFocus(ref);
-        // @ts-ignore
+        const ref = React.useRef(null);
+        useNavigationFocus(ref);
         return (
           <div id="test" tabIndex={-1} ref={ref}>
             {children}
@@ -136,9 +133,8 @@ describe("useNavigationFocus", () => {
     describe("new response", () => {
       it("re-focuses ref for new response re-renders", () => {
         function Focuser() {
-          const ref = React.createRef();
-          const result = useNavigationFocus(ref);
-          // @ts-ignore
+          const ref = React.useRef(null);
+          useNavigationFocus(ref);
           return (
             <div id="test" tabIndex={-1} ref={ref}>
               <input type="text" />
@@ -204,9 +200,8 @@ describe("useNavigationFocus", () => {
         const Router = curiProvider(router);
 
         function Focuser({ cmp: Cmp }) {
-          const ref = React.createRef();
-          const result = useNavigationFocus(ref);
-          // @ts-ignore
+          const ref = React.useRef(null);
+          useNavigationFocus(ref);
           return <Cmp ref={ref} />;
         }
 
@@ -265,9 +260,8 @@ describe("useNavigationFocus", () => {
         const Router = curiProvider(router);
 
         function Focuser({ cmp: Cmp }) {
-          const ref = React.createRef();
-          const result = useNavigationFocus(ref);
-          // @ts-ignore
+          const ref = React.useRef(null);
+          useNavigationFocus(ref);
           return <Cmp innerRef={ref} />;
         }
 
@@ -299,9 +293,8 @@ describe("useNavigationFocus", () => {
     describe("false (default)", () => {
       it("re-focuses for new response re-renders", () => {
         function Focuser() {
-          const ref = React.createRef();
-          const result = useNavigationFocus(ref, { preserve: false });
-          // @ts-ignore
+          const ref = React.useRef(null);
+          useNavigationFocus(ref, { preserve: false });
           return (
             <div id="test" tabIndex={-1} ref={ref}>
               <input type="text" />
@@ -338,9 +331,8 @@ describe("useNavigationFocus", () => {
     describe("true", () => {
       it("does not focus ref if something is already ", () => {
         function Focuser() {
-          const ref = React.createRef();
-          const result = useNavigationFocus(ref, { preserve: true });
-          // @ts-ignore
+          const ref = React.useRef(null);
+          useNavigationFocus(ref, { preserve: true });
           return (
             <div id="test" tabIndex={-1} ref={ref}>
               <input type="text" />
@@ -390,9 +382,8 @@ describe("useNavigationFocus", () => {
 
     it("calls focus({ preventScroll: false }} when not provided", () => {
       function Focuser() {
-        const ref = React.createRef();
-        const result = useNavigationFocus(ref);
-        // @ts-ignore
+        const ref = React.useRef(null);
+        useNavigationFocus(ref);
         return (
           <div id="test" tabIndex={-1} ref={ref}>
             <input type="text" />
@@ -411,9 +402,8 @@ describe("useNavigationFocus", () => {
 
     it("calls focus({ preventScroll: true }} when preventScroll = true", () => {
       function Focuser() {
-        const ref = React.createRef();
-        const result = useNavigationFocus(ref, { preventScroll: true });
-        // @ts-ignore
+        const ref = React.useRef(null);
+        useNavigationFocus(ref, { preventScroll: true });
         return (
           <div id="test" tabIndex={-1} ref={ref}>
             <input type="text" />
@@ -430,9 +420,8 @@ describe("useNavigationFocus", () => {
 
     it("calls focus({ preventScroll: false }} when preventScroll = false", () => {
       function Focuser() {
-        const ref = React.createRef();
-        const result = useNavigationFocus(ref, { preventScroll: false });
-        // @ts-ignore
+        const ref = React.useRef(null);
+        useNavigationFocus(ref, { preventScroll: false });
         return (
           <div id="test" tabIndex={-1} ref={ref}>
             <input type="text" />
@@ -456,9 +445,8 @@ describe("useNavigationFocus", () => {
       const fakeWarn = (console.warn = jest.fn());
 
       function Focuser() {
-        const ref = React.createRef();
-        const result = useNavigationFocus(ref);
-        // @ts-ignore
+        const ref = React.useRef(null);
+        useNavigationFocus(ref);
         return (
           <div id="test" ref={ref}>
             <input type="text" />
@@ -477,9 +465,8 @@ describe("useNavigationFocus", () => {
       const fakeWarn = (console.warn = jest.fn());
 
       function Focuser() {
-        const ref = React.createRef();
-        const result = useNavigationFocus(ref);
-        // @ts-ignore
+        const ref = React.useRef(null);
+        useNavigationFocus(ref);
         return (
           <div id="test">
             <input type="text" ref={ref} />

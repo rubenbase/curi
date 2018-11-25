@@ -1,14 +1,14 @@
 import React from "react";
+import { useCuri } from "@curi/react-universal";
 import { canNavigate } from "../utils";
 
-import { CuriRouter } from "@curi/router";
 import { LinkProps } from "../HookLink";
 
 export default function useClickHandler(
-  router: CuriRouter,
   props: LinkProps,
   setNavigating: (n: boolean) => void
 ) {
+  const { router } = useCuri();
   const cancel = React.useRef(undefined);
   function click(event: React.MouseEvent<HTMLElement>) {
     if (props.onClick) {

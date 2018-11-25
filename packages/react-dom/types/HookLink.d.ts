@@ -1,11 +1,7 @@
 import React from "react";
+import { RouteLocation } from "@curi/router";
 export declare type NavigatingChildren = (navigating: boolean) => React.ReactNode;
-export interface LinkProps {
-    name?: string;
-    params?: object;
-    hash?: string;
-    query?: any;
-    state?: any;
+export interface LinkProps extends RouteLocation {
     onClick?: (e: React.MouseEvent<HTMLElement>) => void;
     anchor?: React.ReactType;
     children: NavigatingChildren | React.ReactNode;

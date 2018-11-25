@@ -1,12 +1,5 @@
-import { Params } from "@curi/router";
-export interface LocationProps {
-    name?: string;
-    params?: Params;
-    hash?: string;
-    query?: any;
-    state?: any;
-}
-export default function useLocation(props: LocationProps): {
+import { RouteLocation } from "@curi/router";
+export default function useLocation(props: RouteLocation): {
     pathname: any;
     hash: string;
     query: any;

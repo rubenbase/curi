@@ -6,7 +6,7 @@ export interface FocusHookProps {
   preserve?: boolean;
 }
 
-export default function useFocus(
+export default function useNavigationFocus(
   ref: React.RefObject<HTMLElement | null>,
   props: FocusHookProps = {}
 ) {

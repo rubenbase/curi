@@ -5,11 +5,11 @@ import InMemory from "@hickory/in-memory";
 import { curi, prepareRoutes } from "@curi/router";
 
 // @ts-ignore (resolved by jest)
-import { curiProvider, useFocus, Focus } from "@curi/react-dom";
+import { curiProvider, useNavigationFocus, Focus } from "@curi/react-dom";
 
 jest.useFakeTimers();
 
-describe("useFocus", () => {
+describe("useNavigationFocus", () => {
   let node;
   let history, router, Router;
   const routes = prepareRoutes([
@@ -34,7 +34,7 @@ describe("useFocus", () => {
     it("focuses ref when mounting", () => {
       function Focuser() {
         const ref = React.createRef();
-        const result = useFocus(ref);
+        const result = useNavigationFocus(ref);
         // @ts-ignore
         return <div id="test" tabIndex={-1} ref={ref} />;
       }
@@ -64,7 +64,7 @@ describe("useFocus", () => {
 
       function Focuser() {
         const ref = React.createRef();
-        const result = useFocus(ref);
+        const result = useNavigationFocus(ref);
         // @ts-ignore
         return <div id="test" tabIndex={-1} />;
       }
@@ -85,7 +85,7 @@ describe("useFocus", () => {
     it("does not re-focus ref for regular re-renders", () => {
       function Focuser({ children }) {
         const ref = React.createRef();
-        const result = useFocus(ref);
+        const result = useNavigationFocus(ref);
         // @ts-ignore
         return (
           <div id="test" tabIndex={-1} ref={ref}>
@@ -137,7 +137,7 @@ describe("useFocus", () => {
       it("re-focuses ref for new response re-renders", () => {
         function Focuser() {
           const ref = React.createRef();
-          const result = useFocus(ref);
+          const result = useNavigationFocus(ref);
           // @ts-ignore
           return (
             <div id="test" tabIndex={-1} ref={ref}>
@@ -205,7 +205,7 @@ describe("useFocus", () => {
 
         function Focuser({ cmp: Cmp }) {
           const ref = React.createRef();
-          const result = useFocus(ref);
+          const result = useNavigationFocus(ref);
           // @ts-ignore
           return <Cmp ref={ref} />;
         }
@@ -266,7 +266,7 @@ describe("useFocus", () => {
 
         function Focuser({ cmp: Cmp }) {
           const ref = React.createRef();
-          const result = useFocus(ref);
+          const result = useNavigationFocus(ref);
           // @ts-ignore
           return <Cmp innerRef={ref} />;
         }
@@ -300,7 +300,7 @@ describe("useFocus", () => {
       it("re-focuses for new response re-renders", () => {
         function Focuser() {
           const ref = React.createRef();
-          const result = useFocus(ref, { preserve: false });
+          const result = useNavigationFocus(ref, { preserve: false });
           // @ts-ignore
           return (
             <div id="test" tabIndex={-1} ref={ref}>
@@ -339,7 +339,7 @@ describe("useFocus", () => {
       it("does not focus ref if something is already ", () => {
         function Focuser() {
           const ref = React.createRef();
-          const result = useFocus(ref, { preserve: true });
+          const result = useNavigationFocus(ref, { preserve: true });
           // @ts-ignore
           return (
             <div id="test" tabIndex={-1} ref={ref}>
@@ -391,7 +391,7 @@ describe("useFocus", () => {
     it("calls focus({ preventScroll: false }} when not provided", () => {
       function Focuser() {
         const ref = React.createRef();
-        const result = useFocus(ref);
+        const result = useNavigationFocus(ref);
         // @ts-ignore
         return (
           <div id="test" tabIndex={-1} ref={ref}>
@@ -412,7 +412,7 @@ describe("useFocus", () => {
     it("calls focus({ preventScroll: true }} when preventScroll = true", () => {
       function Focuser() {
         const ref = React.createRef();
-        const result = useFocus(ref, { preventScroll: true });
+        const result = useNavigationFocus(ref, { preventScroll: true });
         // @ts-ignore
         return (
           <div id="test" tabIndex={-1} ref={ref}>
@@ -431,7 +431,7 @@ describe("useFocus", () => {
     it("calls focus({ preventScroll: false }} when preventScroll = false", () => {
       function Focuser() {
         const ref = React.createRef();
-        const result = useFocus(ref, { preventScroll: false });
+        const result = useNavigationFocus(ref, { preventScroll: false });
         // @ts-ignore
         return (
           <div id="test" tabIndex={-1} ref={ref}>
@@ -457,7 +457,7 @@ describe("useFocus", () => {
 
       function Focuser() {
         const ref = React.createRef();
-        const result = useFocus(ref);
+        const result = useNavigationFocus(ref);
         // @ts-ignore
         return (
           <div id="test" ref={ref}>
@@ -478,7 +478,7 @@ describe("useFocus", () => {
 
       function Focuser() {
         const ref = React.createRef();
-        const result = useFocus(ref);
+        const result = useNavigationFocus(ref);
         // @ts-ignore
         return (
           <div id="test">

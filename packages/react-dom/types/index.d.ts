@@ -1,8 +1,8 @@
 export { LinkProps, NavigatingChildren } from "./Link";
 export { FocusProps } from "./Focus";
-export { FocusOptions } from "./hooks/useFocus";
+export { FocusHookProps } from "./hooks/useNavigationFocus";
 import Focus from "./Focus";
-import useFocus from "./hooks/useFocus";
+import useNavigationFocus from "./hooks/useNavigationFocus";
 import Link from "./HookLink";
 export * from "@curi/react-universal";
-export { Focus, Link, useFocus };
+export { Focus, Link, useNavigationFocus };

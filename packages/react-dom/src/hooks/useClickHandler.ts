@@ -7,10 +7,10 @@ import { LinkProps } from "../HookLink";
 export default function useClickHandler(
   router: CuriRouter,
   props: LinkProps,
-  setNavigating: (n: boolean) => void,
-  mounted: React.RefObject<boolean>
+  setNavigating: (n: boolean) => void
 ) {
-  return function click(event: React.MouseEvent<HTMLElement>) {
+  const cancel = React.useRef(undefined);
+  function click(event: React.MouseEvent<HTMLElement>) {
     if (props.onClick) {
       props.onClick(event);
     }
@@ -21,15 +21,15 @@ export default function useClickHandler(
       let cancelled, finished;
       // only trigger re-renders when children uses state
       if (typeof props.children === "function") {
-        // how to detect when the containing component has unmounted?
         cancelled = finished = () => {
-          if (mounted.current) {
-            setNavigating(false);
-          }
+          // @ts-ignore
+          cancel.current = undefined;
+          setNavigating(false);
         };
         setNavigating(true);
       }
-      router.navigate({
+      // @ts-ignore
+      cancel.current = router.navigate({
         name: props.name,
         params: props.params,
         query: props.query,
@@ -39,5 +39,6 @@ export default function useClickHandler(
         finished
       });
     }
-  };
+  }
+  return { click, cancel };
 }

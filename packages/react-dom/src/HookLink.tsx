@@ -22,12 +22,12 @@ const HookLink = React.forwardRef((props: LinkProps, ref: React.Ref<any>) => {
   const { router } = useCuri();
   const [navigating, setNavigating] = React.useState(false);
   const href = useHref(router, props);
-  const mounted = React.useRef(true);
-  const click = useClickHandler(router, props, setNavigating, mounted);
+  const { click, cancel } = useClickHandler(router, props, setNavigating);
   React.useEffect(() => {
     return () => {
-      // @ts-ignore
-      mounted.current = false;
+      if (cancel.current) {
+        cancel.current();
+      }
     };
   }, []);
 
@@ -56,5 +56,4 @@ function propCompare(prevProps: LinkProps, nextProps: LinkProps) {
   );
 }
 
-// @ts-ignore
 export default React.memo(HookLink, propCompare);

@@ -5,9 +5,9 @@ import InMemory from "@hickory/in-memory";
 import { curi, prepareRoutes } from "@curi/router";
 
 // @ts-ignore (resolved by jest)
-import { curiProvider, Navigating } from "@curi/react-universal";
+import { curiProvider, Navigating, useNavigating } from "@curi/react-universal";
 
-describe("<Navigating>", () => {
+describe("useNavigating", () => {
   let node;
   const routes = prepareRoutes([
     { name: "Home", path: "" },
@@ -50,19 +50,13 @@ describe("<Navigating>", () => {
       const history = InMemory();
       const router = curi(history, routes);
       const Router = curiProvider(router);
-      ReactDOM.render(
-        <Router>
-          {() => (
-            <Navigating>
-              {cancel => {
-                expect(cancel).toBeUndefined();
-                return null;
-              }}
-            </Navigating>
-          )}
-        </Router>,
-        node
-      );
+
+      function Nav() {
+        const result = useNavigating();
+        expect(result).toBeUndefined();
+        return null;
+      }
+      ReactDOM.render(<Router>{() => <Nav />}</Router>, node);
     });
   });
 
@@ -72,11 +66,14 @@ describe("<Navigating>", () => {
         const history = InMemory();
         const router = curi(history, routes);
         const Router = curiProvider(router);
+
         const children = jest.fn(() => null);
-        ReactDOM.render(
-          <Router>{() => <Navigating>{children}</Navigating>}</Router>,
-          node
-        );
+        function Nav() {
+          const result = useNavigating();
+          return children(result);
+        }
+        ReactDOM.render(<Router>{() => <Nav />}</Router>, node);
+
         const { response: beforeResponse } = router.current();
         expect(beforeResponse.name).toBe("Home");
 
@@ -95,11 +92,13 @@ describe("<Navigating>", () => {
         const history = InMemory();
         const router = curi(history, routes);
         const Router = curiProvider(router);
+
         const children = jest.fn(() => null);
-        ReactDOM.render(
-          <Router>{() => <Navigating>{children}</Navigating>}</Router>,
-          node
-        );
+        function Nav() {
+          const result = useNavigating();
+          return children(result);
+        }
+        ReactDOM.render(<Router>{() => <Nav />}</Router>, node);
 
         const { response: beforeResponse } = router.current();
         expect(beforeResponse.name).toBe("Home");
@@ -112,10 +111,11 @@ describe("<Navigating>", () => {
         const router = curi(history, routes);
         const Router = curiProvider(router);
         const children = jest.fn(() => null);
-        ReactDOM.render(
-          <Router>{() => <Navigating>{children}</Navigating>}</Router>,
-          node
-        );
+        function Nav() {
+          const result = useNavigating();
+          return children(result);
+        }
+        ReactDOM.render(<Router>{() => <Nav />}</Router>, node);
 
         const { response: beforeResponse } = router.current();
         expect(beforeResponse.name).toBe("Home");
@@ -147,10 +147,13 @@ describe("<Navigating>", () => {
         cancelFn = cancel;
         return null;
       });
-      ReactDOM.render(
-        <Router>{() => <Navigating>{children}</Navigating>}</Router>,
-        node
-      );
+
+      function Nav() {
+        const result = useNavigating();
+        return children(result);
+      }
+      ReactDOM.render(<Router>{() => <Nav />}</Router>, node);
+
       const { response: beforeResponse } = router.current();
       expect(beforeResponse.name).toBe("Home");
       expect(children.mock.calls[0][0]).toBeUndefined();
@@ -178,10 +181,11 @@ describe("<Navigating>", () => {
         cancelFn = cancel;
         return null;
       });
-      ReactDOM.render(
-        <Router>{() => <Navigating>{children}</Navigating>}</Router>,
-        node
-      );
+      function Nav() {
+        const result = useNavigating();
+        return children(result);
+      }
+      ReactDOM.render(<Router>{() => <Nav />}</Router>, node);
       const { response: beforeResponse } = router.current();
       expect(beforeResponse.name).toBe("Home");
 

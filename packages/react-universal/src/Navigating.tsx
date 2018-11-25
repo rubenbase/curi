@@ -8,6 +8,6 @@ export interface NavigatingProps {
 }
 
 export default function Navigating(props: NavigatingProps): ReactNode {
-  const cancel = useNavigating(props);
+  const cancel = useNavigating();
   return props.children(cancel);
 }

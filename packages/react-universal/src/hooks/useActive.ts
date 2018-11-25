@@ -2,11 +2,13 @@ import useCuri from "./useCuri";
 
 import { Params } from "@curi/router";
 
-export default function useActive(
-  name: string,
-  params: Params,
-  partial: boolean
-) {
+export interface ActiveHookProps {
+  name: string;
+  params?: Params;
+  partial?: boolean;
+}
+
+export default function useActive(props: ActiveHookProps) {
   const { router, response } = useCuri();
   if (process.env.NODE_ENV !== "production") {
     if (!router.route.active) {
@@ -22,5 +24,5 @@ const router = curi(history, routes, {
       );
     }
   }
-  return router.route.active(name, response, params, partial);
+  return router.route.active(props.name, response, props.params, props.partial);
 }

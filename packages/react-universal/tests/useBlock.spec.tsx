@@ -1,16 +1,13 @@
 import "jest";
 import React from "react";
 import ReactDOM from "react-dom";
-import { curi, prepareRoutes } from "@curi/router";
 import InMemory from "@hickory/in-memory";
+import { curi, prepareRoutes } from "@curi/router";
 
 // @ts-ignore (resolved by jest)
-import { curiProvider, Block } from "@curi/react-universal";
+import { curiProvider, useBlock } from "@curi/react-universal";
 
-// TODO: Determine which tests can be removed because the behavior
-// is already tested in the useBlock tests.
-
-describe("Block", () => {
+describe("useBlock", () => {
   let confirmationFunction;
   let node;
   const confirmWith = jest.fn(fn => {
@@ -38,59 +35,56 @@ describe("Block", () => {
 
   it("if active=true when mounting, adds block", () => {
     const confirm = jest.fn();
-    ReactDOM.render(
-      <Router>{() => <Block active={true} confirm={confirm} />}</Router>,
-      node
-    );
-    expect(confirmWith.mock.calls.length).toBe(1);
-    expect(confirmWith.mock.calls[0][0]).toBe(confirm);
-  });
 
-  it("defaults to active=true", () => {
-    const confirm = jest.fn();
-    ReactDOM.render(<Router>{() => <Block confirm={confirm} />}</Router>, node);
+    function Blocker() {
+      const result = useBlock(true, confirm);
+      return null;
+    }
+    ReactDOM.render(<Router>{() => <Blocker />}</Router>, node);
+
     expect(confirmWith.mock.calls.length).toBe(1);
     expect(confirmWith.mock.calls[0][0]).toBe(confirm);
   });
 
   it("if active=false when mounting, does not add block", () => {
     const confirm = jest.fn();
-    ReactDOM.render(
-      <Router>{() => <Block active={false} confirm={confirm} />}</Router>,
-      node
-    );
+    function Blocker() {
+      const result = useBlock(false, confirm);
+      return null;
+    }
+    ReactDOM.render(<Router>{() => <Blocker />}</Router>, node);
     expect(confirmWith.mock.calls.length).toBe(0);
   });
 
   it("removes block if active goes true->false while updating", () => {
     const confirm = jest.fn();
 
-    ReactDOM.render(
-      <Router>{() => <Block active={true} confirm={confirm} />}</Router>,
-      node
-    );
+    function Blocker(props) {
+      const result = useBlock(props.block, confirm);
+      return null;
+    }
+    ReactDOM.render(<Router>{() => <Blocker block={true} />}</Router>, node);
+
     expect(removeConfirmation.mock.calls.length).toBe(0);
 
-    ReactDOM.render(
-      <Router>{() => <Block active={false} confirm={confirm} />}</Router>,
-      node
-    );
+    ReactDOM.render(<Router>{() => <Blocker block={false} />}</Router>, node);
     expect(removeConfirmation.mock.calls.length).toBe(1);
   });
 
   it("adds block if active goes false->true while updating", () => {
     const confirm = jest.fn();
 
-    ReactDOM.render(
-      <Router>{() => <Block active={false} confirm={confirm} />}</Router>,
-      node
-    );
+    function Blocker(props) {
+      const result = useBlock(props.block, confirm);
+      return null;
+    }
+
+    ReactDOM.render(<Router>{() => <Blocker active={false} />}</Router>, node);
+
     expect(confirmWith.mock.calls.length).toBe(0);
 
-    ReactDOM.render(
-      <Router>{() => <Block active={true} confirm={confirm} />}</Router>,
-      node
-    );
+    ReactDOM.render(<Router>{() => <Blocker block={true} />}</Router>, node);
+
     expect(confirmWith.mock.calls.length).toBe(1);
   });
 
@@ -98,34 +92,42 @@ describe("Block", () => {
     const confirm = jest.fn();
     const confirm2 = jest.fn();
 
+    function Blocker(props) {
+      const result = useBlock(true, props.confirm);
+      return null;
+    }
+
     ReactDOM.render(
-      <Router>{() => <Block active={true} confirm={confirm} />}</Router>,
+      <Router>{() => <Blocker confirm={confirm} />}</Router>,
       node
     );
+
     expect(confirmWith.mock.calls.length).toBe(1);
     expect(removeConfirmation.mock.calls.length).toBe(0);
 
     ReactDOM.render(
-      <Router>{() => <Block active={true} confirm={confirm2} />}</Router>,
+      <Router>{() => <Blocker confirm={confirm2} />}</Router>,
       node
     );
+
     expect(confirmWith.mock.calls.length).toBe(2);
     expect(removeConfirmation.mock.calls.length).toBe(1);
   });
 
   it("does not reset block if both active and confirm stay the same", () => {
     const confirm = jest.fn();
-    ReactDOM.render(
-      <Router>{() => <Block active={true} confirm={confirm} />}</Router>,
-      node
-    );
+
+    function Blocker(props) {
+      const result = useBlock(true, confirm);
+      return null;
+    }
+
+    ReactDOM.render(<Router>{() => <Blocker />}</Router>, node);
 
     expect(confirmWith.mock.calls.length).toBe(1);
     expect(removeConfirmation.mock.calls.length).toBe(0);
-    ReactDOM.render(
-      <Router>{() => <Block active={true} confirm={confirm} />}</Router>,
-      node
-    );
+
+    ReactDOM.render(<Router>{() => <Blocker />}</Router>, node);
 
     expect(confirmWith.mock.calls.length).toBe(1);
     expect(removeConfirmation.mock.calls.length).toBe(0);
@@ -133,10 +135,12 @@ describe("Block", () => {
 
   it("unblocks when unmounting", () => {
     const confirm = jest.fn();
-    ReactDOM.render(
-      <Router>{() => <Block active={true} confirm={confirm} />}</Router>,
-      node
-    );
+    function Blocker(props) {
+      const result = useBlock(true, confirm);
+      return null;
+    }
+
+    ReactDOM.render(<Router>{() => <Blocker />}</Router>, node);
     expect(removeConfirmation.mock.calls.length).toBe(0);
     ReactDOM.unmountComponentAtNode(node);
     expect(removeConfirmation.mock.calls.length).toBe(1);

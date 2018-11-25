@@ -2,9 +2,8 @@ import React from "react";
 import useCuri from "./useCuri";
 
 import { CancelActiveNavigation } from "@curi/router";
-import { NavigatingProps } from "../Navigating";
 
-export default function useNavigating(props: NavigatingProps) {
+export default function useNavigating() {
   const { router } = useCuri();
   const [cancel, setCancel] = React.useState(undefined);
   const [removed, setRemoved] = React.useState(false);

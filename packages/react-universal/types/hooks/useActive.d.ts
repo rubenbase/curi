@@ -1,2 +1,7 @@
 import { Params } from "@curi/router";
-export default function useActive(name: string, params: Params, partial: boolean): any;
+export interface ActiveHookProps {
+    name: string;
+    params?: Params;
+    partial?: boolean;
+}
+export default function useActive(props: ActiveHookProps): any;

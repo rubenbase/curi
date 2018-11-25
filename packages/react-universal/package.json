@@ -34,7 +34,7 @@
   "author": "Paul Sherman",
   "license": "MIT",
   "peerDependencies": {
-    "react": ">=16.3"
+    "react": ">=16.7.0-alpha.0"
   },
   "dependencies": {
     "@curi/route-active": "^1.1.0",

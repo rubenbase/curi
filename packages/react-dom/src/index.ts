@@ -1,8 +1,7 @@
 export { LinkProps, NavigatingChildren } from "./Link";
 export { FocusProps } from "./Focus";
-export { FocusOptions } from "./hooks/useFocus";
+export { FocusHookProps } from "./hooks/useFocus";
 
-// import Link from "./Link";
 import Focus from "./Focus";
 import useFocus from "./hooks/useFocus";
 import Link from "./HookLink";

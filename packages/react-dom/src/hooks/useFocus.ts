@@ -1,14 +1,14 @@
 import React from "react";
 import { useCuri } from "@curi/react-universal";
 
-export interface FocusOptions {
+export interface FocusHookProps {
   preventScroll?: boolean;
   preserve?: boolean;
 }
 
 export default function useFocus(
-  props: FocusOptions,
-  ref: React.RefObject<HTMLElement | null>
+  ref: React.RefObject<HTMLElement | null>,
+  props: FocusHookProps = {}
 ) {
   const { response } = useCuri();
   React.useLayoutEffect(

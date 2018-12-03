@@ -3,6 +3,7 @@ export { BlockProps } from "./Block";
 export { RouterProps, CuriRenderFn } from "./curiProvider";
 export { NavigatingProps } from "./Navigating";
 export { ActiveHookProps } from "./hooks/useActive";
+export * from "./types";
 
 import Active from "./Active";
 import Block from "./Block";
@@ -16,6 +17,7 @@ import useBlock from "./hooks/useBlock";
 import useLocation from "./hooks/useLocation";
 import useHref from "./hooks/useHref";
 import useNavigating from "./hooks/useNavigating";
+import useNavigationHandler from "./hooks/useNavigationHandler";
 
 export {
   Active,
@@ -28,5 +30,6 @@ export {
   useBlock,
   useLocation,
   useHref,
-  useNavigating
+  useNavigating,
+  useNavigationHandler
 };

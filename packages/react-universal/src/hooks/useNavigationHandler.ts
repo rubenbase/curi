@@ -1,18 +1,33 @@
 import React from "react";
-import { useCuri } from "@curi/react-universal";
-import { canNavigate } from "../utils";
+import useCuri from "./useCuri";
 
-import { LinkProps } from "../HookLink";
+import { RouteLocation } from "@curi/router";
+import { NavigatingChildren } from "../types";
 
-export default function useClickHandler(
-  props: LinkProps,
-  setNavigating: (n: boolean) => void
+export interface NavigationHookProps<T extends React.SyntheticEvent>
+  extends RouteLocation {
+  children: NavigatingChildren | React.ReactNode;
+  onNav?: (e: T) => void;
+  forward?: object;
+}
+
+function defaultCanNavigate() {
+  return true;
+}
+
+export type CanNavigate<T> = (e: T, forward?: object) => boolean;
+
+export default function useNavigationHandler<T extends React.SyntheticEvent>(
+  props: NavigationHookProps<T>,
+  setNavigating: (n: boolean) => void,
+  canNavigate: CanNavigate<T> = defaultCanNavigate
 ) {
   const { router } = useCuri();
   const cancel = React.useRef(undefined);
-  function click(event: React.MouseEvent<HTMLElement>) {
-    if (props.onClick) {
-      props.onClick(event);
+
+  function handler(event: T) {
+    if (props.onNav) {
+      props.onNav(event);
     }
 
     if (canNavigate(event, props.forward)) {
@@ -40,5 +55,5 @@ export default function useClickHandler(
       });
     }
   }
-  return { click, cancel };
+  return { handler, cancel };
 }

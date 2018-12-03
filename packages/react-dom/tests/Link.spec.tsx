@@ -679,12 +679,12 @@ describe("<Link>", () => {
       });
     });
 
-    describe("onClick", () => {
-      it("calls onClick prop func if provided", () => {
+    describe("onNav", () => {
+      it("calls onNav prop func if provided", () => {
         const history = InMemory();
         const mockNavigate = jest.fn();
         history.navigate = mockNavigate;
-        const onClick = jest.fn();
+        const onNav = jest.fn();
         const routes = prepareRoutes([
           { name: "Test", path: "test" },
           { name: "Catch All", path: "(.*)" }
@@ -695,7 +695,7 @@ describe("<Link>", () => {
         ReactDOM.render(
           <Router>
             {() => (
-              <Link name="Test" onClick={onClick}>
+              <Link name="Test" onNav={onNav}>
                 Test
               </Link>
             )}
@@ -715,15 +715,15 @@ describe("<Link>", () => {
           button: 0
         };
         Simulate.click(a, leftClickEvent);
-        expect(onClick.mock.calls.length).toBe(1);
+        expect(onNav.mock.calls.length).toBe(1);
         expect(mockNavigate.mock.calls.length).toBe(1);
       });
 
-      it("does not call history.navigate if onClick prevents default", () => {
+      it("does not call history.navigate if onNav prevents default", () => {
         const history = InMemory();
         const mockNavigate = jest.fn();
         history.navigate = mockNavigate;
-        const onClick = jest.fn(event => {
+        const onNav = jest.fn(event => {
           event.preventDefault();
         });
         const routes = prepareRoutes([
@@ -736,7 +736,7 @@ describe("<Link>", () => {
         ReactDOM.render(
           <Router>
             {() => (
-              <Link name="Test" onClick={onClick}>
+              <Link name="Test" onNav={onNav}>
                 Test
               </Link>
             )}
@@ -756,7 +756,7 @@ describe("<Link>", () => {
           button: 0
         };
         Simulate.click(a, leftClickEvent);
-        expect(onClick.mock.calls.length).toBe(1);
+        expect(onNav.mock.calls.length).toBe(1);
         expect(mockNavigate.mock.calls.length).toBe(0);
       });
     });

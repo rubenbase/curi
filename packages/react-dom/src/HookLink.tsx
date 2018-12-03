@@ -1,11 +1,10 @@
 import React from "react";
-import { useHref } from "@curi/react-universal";
-import useClickHandler from "./hooks/useClickHandler";
+import { useHref, useNavigationHandler } from "@curi/react-universal";
 import shallowEqual from "shallowequal";
+import { canNavigate } from "./utils";
 
 import { RouteLocation } from "@curi/router";
-
-export type NavigatingChildren = (navigating: boolean) => React.ReactNode;
+import { NavigatingChildren } from "@curi/react-universal";
 
 export interface LinkProps extends RouteLocation {
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
@@ -17,7 +16,9 @@ export interface LinkProps extends RouteLocation {
 const HookLink = React.forwardRef((props: LinkProps, ref: React.Ref<any>) => {
   const [navigating, setNavigating] = React.useState(false);
   const href = useHref(props);
-  const { click, cancel } = useClickHandler(props, setNavigating);
+  const { handler, cancel } = useNavigationHandler<
+    React.MouseEvent<HTMLElement>
+  >(props, setNavigating, canNavigate);
   React.useEffect(() => {
     return () => {
       if (cancel.current) {
@@ -29,7 +30,7 @@ const HookLink = React.forwardRef((props: LinkProps, ref: React.Ref<any>) => {
   const { anchor: Anchor = "a", children, forward } = props;
 
   return (
-    <Anchor onClick={click} href={href} ref={ref} {...forward}>
+    <Anchor onClick={handler} href={href} ref={ref} {...forward}>
       {typeof children === "function"
         ? (children as NavigatingChildren)(navigating)
         : children}
